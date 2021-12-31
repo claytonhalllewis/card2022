@@ -1,0 +1,111 @@
+<!-- Create a web page with the title "Coin Flips with Diagonal"
+show a 3 by 3 grid of letters
+the first row is H H H
+the second row is H T H
+the third row is H H H
+write a function flip that take H and returns T, and takes T and returns H
+write a function flipRow that takes a number and flips the letters in that row
+write a function flipColumn that takes a number and flips the letters in that column
+provide a button for each row
+when this button is clicked, apply flipRow to that row
+provide a button for each column
+when this button is clicked, apply flipColumn to that row
+add another button that sets all the buttons to H or T at random
+add another button that flips the letters on the diagonal
+-->
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+img{
+  width: 100px
+}
+h1 {
+  color: red;
+}
+</style>
+<title>Happy 2022!</title>
+</head>
+<body>
+
+
+
+<table>
+<tr>
+<td onclick="flip(0)"><img src="bl 1.png"></td>
+<td onclick="flip(1)"><img src="bl 2.png"></td>
+<td onclick="flip(2)"><img src="sq 3.png"></td>
+</tr>
+<tr>
+<td onclick="flip(3)"><img src="bl 4.png"></td>
+<td onclick="flip(4)"><img src="bl 5.png"></td>
+<td onclick="flip(5)"><img src="bl 6.png"></td>
+</tr>
+<tr>
+<td onclick="flip(6)"><img src="bl 7.png"></td>
+<td onclick="flip(7)"><img src="sq 8.png"></td>
+<td onclick="flip(8)"><img src="sq 9.png"></td>
+</tr>
+</table>
+<h1>Happy New Year from Boulder Creek!</h1>
+<br>
+<button onclick="flipRow(0)">Flip Row 0</button>
+<button onclick="flipRow(1)">Flip Row 1</button>
+<button onclick="flipRow(2)">Flip Row 2</button>
+<button onclick="flipColumn(0)">Flip Column 0</button>
+<button onclick="flipColumn(1)">Flip Column 1</button>
+<button onclick="flipColumn(2)">Flip Column 2</button>
+<button onclick="flipDiagonal()">Flip Diagonal</button>
+<button onclick="randomize()">Randomize</button>
+<br>
+Use the buttons to expose the complete picture. You can flip an individual square by clicking on it, but that's cheating. Refreshing the page will restore the original form. The "Randomize" button will give you a new random configuration to try to solve; not all configurations are solvable, though. <br><br>
+Most of the code for this was written by the <a href="https://openai.com/blog/openai-codex/">Codex system </a> in response to a sequence of prompts I gave it. I did tweak the code to operate on pieces of image, rather than letters H or T, representing coins, which is what I had asked Codex to do. Nearly all of the HTML for the puzzle, and the logic, was written by Codex. If you know how to "View Source" in your browser, you'll see pretty much the prompt I gave Codex, though the actual story is a bit more complicated than that.<br>To give an idea of what works and doesn't work in this process: On the one hand, I did not ask Codex to make the individual squares clickable. It did that on its own. On the other hand, the code it wrote for that didn't quite work :) .
+<script>
+
+function flip(index) {
+var table = document.getElementsByTagName("table")[0];
+var row = table.rows[Math.floor(index / 3)];
+var cell = row.cells[index % 3];
+console.log(cell.innerHTML);
+cell.innerHTML=flipSrc(cell.innerHTML);
+
+}
+function flipSrc(s)
+{
+    if (s.includes("sq"))
+        return s.replace("sq","bl");
+    return s.replace("bl","sq");
+}
+function flipRow(index) {
+var table = document.getElementsByTagName("table")[0];
+var row = table.rows[index];
+for (var i = 0; i < row.cells.length; i++) {
+    flip(3*index+i);
+}
+}
+function flipColumn(index) {
+var table = document.getElementsByTagName("table")[0];
+for (var i = 0; i < table.rows.length; i++) {
+    table.rows[i].cells[index].innerHTML=flipSrc(table.rows[i].cells[index].innerHTML);
+    
+}
+}
+function randomize() {
+    var table = document.getElementsByTagName("table")[0];
+    for (var i = 0; i < table.rows.length; i++) {
+        for (var j = 0; j < table.rows[i].cells.length; j++) {
+            if (Math.random() > 0.5) 
+                table.rows[i].cells[j].innerHTML=flipSrc(table.rows[i].cells[j].innerHTML)
+        }
+    }
+}
+function flipDiagonal() {
+    var table = document.getElementsByTagName("table")[0];
+    for (var i = 0; i < table.rows.length; i++) {
+        table.rows[i].cells[i].innerHTML=flipSrc(table.rows[i].cells[i].innerHTML);
+        
+    }
+}
+</script>
+</body>
+</html>
